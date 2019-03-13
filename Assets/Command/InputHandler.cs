@@ -11,10 +11,6 @@ namespace Assets.Scripts
         {
             _button1 = new JumpCommand();
             _button2 = new FireCommand();
-<<<<<<< HEAD
-=======
-            Debug.Log(_button1);
->>>>>>> c948a8b402f88a5876146f7a5c06f95549f3a6ce
         }
 
         public Command HandleInput()
