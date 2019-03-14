@@ -11,7 +11,7 @@ public class Fractal : MonoBehaviour
     public float childScale;
     private int depth = 0;
 
-    private Material[] materials;
+    private Material[,] materials;
 
     private static Vector3[] childDirections = 
     {Vector3.up,
@@ -34,7 +34,8 @@ public class Fractal : MonoBehaviour
         }
 
         gameObject.AddComponent<MeshFilter>().mesh = mesh;
-        gameObject.AddComponent<MeshRenderer>().material = materials[depth];
+        gameObject.AddComponent<MeshRenderer>().material =
+            materials[depth, Random.Range(0, 2)];
 
 
         if (depth < maxDepth)
@@ -45,16 +46,20 @@ public class Fractal : MonoBehaviour
 
     private void InitializeMaterials()
     {
-        materials = new Material[maxDepth + 1];
+        materials = new Material[maxDepth + 1, 2];
         for(int i = 0; i <= maxDepth; i++)
         {
             float t = i / (maxDepth - 1);
             t *= t;
-            materials[i] = new Material(mat);
-            materials[i].color =
+            materials[i, 0] = new Material(mat);
+            materials[i, 0].color =
                 Color.Lerp(Color.white, Color.yellow, t);
+            materials[i, 1] = new Material(mat);
+            materials[i, 1].color =
+                Color.Lerp(Color.white, Color.cyan, t);
         }
-        materials[maxDepth].color = Color.magenta;
+        materials[maxDepth, 0].color = Color.magenta;
+        materials[maxDepth, 1].color = Color.red;
     }
 
     private IEnumerator CreateChildren()
