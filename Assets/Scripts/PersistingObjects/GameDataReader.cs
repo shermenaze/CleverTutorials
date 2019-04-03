@@ -10,7 +10,7 @@ public class GameDataReader
         this.reader = reader;
     }
 
-    public int ReadeInt()
+    public int ReadInt()
     {
         return reader.ReadInt32();
     }
