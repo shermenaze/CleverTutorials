@@ -1,0 +1,45 @@
+﻿using System.IO;
+using UnityEngine;
+
+public class GameDataReader
+{
+    BinaryReader reader;
+
+    public GameDataReader(BinaryReader reader)
+    {
+        this.reader = reader;
+    }
+
+    public int ReadeInt()
+    {
+        return reader.ReadInt32();
+    }
+
+    public float ReadFloat()
+    {
+        return reader.ReadSingle();
+    }
+
+    public Vector3 ReadVector3()
+    {
+        Vector3 v;
+
+        v.x = reader.ReadSingle();
+        v.y = reader.ReadSingle();
+        v.z = reader.ReadSingle();
+
+        return v;
+    }
+
+    public Quaternion ReadQuaternion()
+    {
+        Quaternion q;
+
+        q.x = reader.ReadSingle();
+        q.y = reader.ReadSingle();
+        q.z = reader.ReadSingle();
+        q.w = reader.ReadSingle();
+
+        return q;
+    }
+}

@@ -1,17 +1,21 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Fractal : MonoBehaviour
 {
     public Material mat;
-    public Mesh mesh;
+    public Mesh[] meshs;
 
     public int maxDepth = 4;
     public float childScale;
-    private int depth = 0;
+    public float spawnProbability;
+    public float maxRotationSpeed;
+    public float maxTwist;
 
+
+    private float rotationSpeed;
     private Material[,] materials;
+    private int depth = 0;
 
     private static Vector3[] childDirections = 
     {Vector3.up,
@@ -33,7 +37,7 @@ public class Fractal : MonoBehaviour
             InitializeMaterials();
         }
 
-        gameObject.AddComponent<MeshFilter>().mesh = mesh;
+        gameObject.AddComponent<MeshFilter>().mesh = meshs[Random.Range(0, meshs.Length)];
         gameObject.AddComponent<MeshRenderer>().material =
             materials[depth, Random.Range(0, 2)];
 
@@ -42,6 +46,14 @@ public class Fractal : MonoBehaviour
         {
             StartCoroutine(CreateChildren());
         }
+
+        rotationSpeed = Random.Range(-maxRotationSpeed, maxRotationSpeed);
+        transform.Rotate(Random.Range(-maxTwist, maxTwist), 0, 0);
+    }
+
+    private void Update()
+    {
+        transform.Rotate(0, rotationSpeed * Time.deltaTime , 0);
     }
 
     private void InitializeMaterials()
@@ -66,19 +78,25 @@ public class Fractal : MonoBehaviour
     {
         for(int i = 0; i < childDirections.Length; i++)
         {
-            yield return new WaitForSeconds(Random.Range(0.1f,0.5f));
-            new GameObject("Fractal Child").AddComponent<Fractal>().
-            Initialize(this, i);
+            if (Random.value < spawnProbability)
+            {
+                yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+                new GameObject("Fractal Child").AddComponent<Fractal>().
+                Initialize(this, i);
+            }
         }
     }
 
     public void Initialize(Fractal parent, int childIndex)
     {
-        mesh = parent.mesh;
+        meshs = parent.meshs;
         mat = parent.mat;
         materials = parent.materials;
         maxDepth = parent.maxDepth;
         depth = parent.depth + 1;
+        spawnProbability = parent.spawnProbability;
+        maxRotationSpeed = parent.maxRotationSpeed;
+        maxTwist = parent.maxTwist;
 
         childScale = parent.childScale;
         transform.parent = parent.transform;
