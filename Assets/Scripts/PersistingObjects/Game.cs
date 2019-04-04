@@ -6,18 +6,19 @@ using Random = UnityEngine.Random;
 public class Game : PersistableObject
 {
     public PersistentStorage storage;
-    public PersistableObject prefab;
+    public ShapeFactory ShapeFactory;
     public KeyCode CreateKey = KeyCode.C;
     public KeyCode NewGameKey = KeyCode.N;
     public KeyCode SaveGameKey = KeyCode.S;
     public KeyCode LoadGameKey = KeyCode.L;
-    List<PersistableObject> objects;
+    List<Shape> _shapes;
 
     private string savePath;
+    private const int saveVersion = 1;
 
     private void Awake()
     {
-        objects = new List<PersistableObject>();
+        _shapes = new List<Shape>();
     }
 
     private void Update()
@@ -34,42 +35,53 @@ public class Game : PersistableObject
 
     private void StartNewGame()
     {
-        for (int i = 0; i < objects.Count; i++)
+        for (int i = 0; i < _shapes.Count; i++)
         {
-            Destroy(objects[i].gameObject);
+            Destroy(_shapes[i].gameObject);
         }
 
-        objects.Clear();
+        _shapes.Clear();
     }
 
     void CreateObject()
     {
-        PersistableObject o = Instantiate(prefab);
-        Transform t = o.transform;
+        Shape instance = ShapeFactory.GetRandomShape();
+        Transform t = instance.transform;
         t.localPosition = Random.insideUnitSphere * 5;
         t.localRotation = Random.rotation;
         t.localScale = Vector3.one * Random.Range(0.1f, 1);
-        objects.Add(o);
+        _shapes.Add(instance);
     }
 
     public override void Save(GameDataWriter writer)
     {
-        writer.Write(objects.Count);
+        writer.Write(-saveVersion);
+        writer.Write(_shapes.Count);
 
-        for (int i = 0; i < objects.Count; i++)
+        for (int i = 0; i < _shapes.Count; i++)
         {
-            objects[i].Save(writer);
+            writer.Write(_shapes[i].ShapeID);
+            _shapes[i].Save(writer);
         }
     }
 
     public override void Load(GameDataReader reader)
     {
-        int count = reader.ReadInt();
+        int version = -reader.ReadInt();
+        if (version > saveVersion)
+        {
+            Debug.LogError("Unsupported save version: " + version);
+            return;
+        }
+
+        int count = version <= 0 ? -version : reader.ReadInt();
+
         for (int i = 0; i < count; i++)
         {
-            PersistableObject o = Instantiate(prefab);
-            o.Load(reader);
-            objects.Add(o);
+            int shapeId = version > 0 ? reader.ReadInt() : 0;
+            Shape instance = ShapeFactory.GetShape(shapeId);
+            instance.Load(reader);
+            _shapes.Add(instance);
         }
     }
 }

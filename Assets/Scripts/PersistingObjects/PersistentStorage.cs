@@ -13,7 +13,7 @@ public class PersistentStorage : MonoBehaviour
     public void Save(PersistableObject o)
     {
         using
-            (var writer = new BinaryWriter(File.Open(savePath, FileMode.Open)))
+            (var writer = new BinaryWriter(File.Open(savePath, FileMode.Create)))
         {
             o.Save(new GameDataWriter(writer));
         }
