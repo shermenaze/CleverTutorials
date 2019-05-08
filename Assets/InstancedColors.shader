@@ -12,12 +12,12 @@
 		CGPROGRAM
 		#pragma surface surf Standard fullforwardshadows
 		#pragma instancing_options assumeuniformscaling
-
 		#pragma target 3.0
 
 		sampler2D _MainTex;
 
-		struct Input {
+		struct Input
+		{
 			float2 uv_MainTex;
 		};
 
@@ -25,12 +25,13 @@
 		half _Metallic;
 
 		UNITY_INSTANCING_BUFFER_START(Props)
-			UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+		UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
 		UNITY_INSTANCING_BUFFER_END(Props)
 
-		void surf (Input IN, inout SurfaceOutputStandard o) {
+		void surf (Input IN, inout SurfaceOutputStandard o)
+		{
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) *
-				UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+			UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
 			o.Albedo = c.rgb;
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;

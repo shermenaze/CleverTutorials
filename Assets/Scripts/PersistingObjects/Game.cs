@@ -11,6 +11,8 @@ public class Game : PersistableObject
     public KeyCode NewGameKey = KeyCode.N;
     public KeyCode SaveGameKey = KeyCode.S;
     public KeyCode LoadGameKey = KeyCode.L;
+    public KeyCode DestroyKey = KeyCode.X;
+
     List<Shape> _shapes;
 
     private string savePath;
@@ -25,6 +27,8 @@ public class Game : PersistableObject
     {
         if (Input.GetKeyDown(CreateKey))
             CreateObject();
+        else if (Input.GetKeyDown(DestroyKey))
+            DestroyObject();
         else if (Input.GetKeyDown(NewGameKey))
             StartNewGame();
         else if (Input.GetKeyDown(SaveGameKey))
@@ -59,6 +63,16 @@ public class Game : PersistableObject
 
         _shapes.Add(instance);
     }
+
+    public void DestroyObject()
+    {
+        if (_shapes.Count > 0)
+        {
+            int index = Random.Range(0, _shapes.Count);
+            Destroy(_shapes[index].gameObject);
+            _shapes.RemoveAt(index);
+        }
+    } 
 
     public override void Save(GameDataWriter writer)
     {
