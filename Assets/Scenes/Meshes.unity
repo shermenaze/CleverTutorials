@@ -190,9 +190,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 642714081}
-  - component: {fileID: 642714084}
   - component: {fileID: 642714083}
   - component: {fileID: 642714082}
+  - component: {fileID: 642714084}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -231,7 +231,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aaf3b0796c857bb4883dbac17af995d5, type: 2}
+  - {fileID: 2100000, guid: 1658e044206e94d608145419d1317859, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -268,11 +268,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 642714080}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80209b33dbd8fe344aeb2d330240af8a, type: 3}
+  m_Script: {fileID: 11500000, guid: ea4a0895d9fa47d459fc90d0382d4654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSize: 10
-  ySize: 5
+  xSize: 3
+  ySize: 2
+  zSize: 4
 --- !u!1 &1497028466
 GameObject:
   m_ObjectHideFlags: 0
