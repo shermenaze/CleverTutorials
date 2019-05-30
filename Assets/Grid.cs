@@ -50,7 +50,11 @@ public class Grid : MonoBehaviour
             }
         }
         mesh.triangles = triangles;
+<<<<<<< HEAD
         mesh.RecalculateNormals();
+=======
+
+>>>>>>> a1099d3fd867300eb6b34fdfabee9126776278be
     }
 
     private void OnDrawGizmos()
